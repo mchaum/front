@@ -1,0 +1,117 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+}
+
+.choice-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+   margin-top: 100px;
+}
+
+.choice-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+}
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#messageArea {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+    width: 50%;
+    max-width: 50%;
+    overflow-y: auto;
+    max-height: 450px;
+    height: 450px;
+}
+
+#messageArea li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    position: relative;
+    align-items: flex-start;
+}
+
+#messageArea li.chat-message.sent {
+    align-items: flex-end;
+}
+
+#messageArea li.chat-message.received {
+    align-items: flex-start;
+}
+
+#messageArea li p {
+    background-color: #e1e1e1;
+    padding: 10px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    margin: 5px 0;
+    font-size: 14px;
+    max-width: 80%;
+}
+
+#messageArea li span {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+#messageArea li.chat-message.sent p {
+    background-color: #5687df;
+    color: white;
+}
+
+#messageArea li.chat-message.received p {
+    background-color: #eeeeee;
+}
+
+input[type="text"] {
+    width: 50%;
+    height: 50px;
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ed633d;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ed633d;
+}
+
+h2,
+h3 {
+    font-size: 24px;
+    color: #333;
+}
+
+h3 {
+    margin-bottom: 20px;
+}
