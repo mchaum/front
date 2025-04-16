@@ -1,31 +1,74 @@
-<div *ngIf="!role" class="choice-area">
-  <h2>Rôle :</h2>
-  <div class="choice-btn">
-    <button (click)="setRole('client')">Client</button>
-  <button (click)="setRole('support')">Support</button>
+<!-- Identification -->
+<div class="login-container" *ngIf="!user">
+  <h2>Your Car Your Way - Centre d'aide</h2>
+  <input [(ngModel)]="username" placeholder="Username">
+  <select [(ngModel)]="type">
+    <option value="CLIENT">Client</option>
+    <option value="SUPPORT">Support</option>
+  </select>
+  <button (click)="login()">Entrer dans le chat</button>
+</div>
+
+<!-- CLIENT -->
+<div class="chat-area" *ngIf="user && user.type === 'CLIENT'">
+  <h2>Bienvenue, {{ user.username }} (Client)</h2>
+
+  <div class="chat-container-client">
+    <ul id="messageArea">
+      <li *ngFor="let msg of messages" [ngClass]="{
+        'chat-message': true,
+        'sent': msg.fromUser === user.username,
+        'received': msg.fromUser !== user.username
+      }">
+        <span class="sender">{{ msg.fromUser }}</span>
+        <p class="message-content">{{ msg.content }}</p>
+      </li>
+    </ul>
+
+    <div class="message-input">
+      <input type="text" [(ngModel)]="message" placeholder="Message" (keydown.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Envoyer</button>
+    </div>
   </div>
 </div>
 
-<div class="chat-area" *ngIf="role && isConnected">
-  <h3>Rôle : {{ role }}</h3>
 
-  <ul id="messageArea">
-    <li *ngFor="let message of messages" [ngClass]="{
-      'chat-message': true, 
-      'sent': message.sender === role, 
-      'received': message.sender !== role
-    }">
-      <span *ngIf="message.type === 'CHAT'">{{ message.sender }}</span>
-      <p>{{ message.type === 'CHAT' ? message.content : message.sender + ' ' + (message.type === 'JOIN' ? 'joined!' : 'left!') }}</p>
-    </li>
-  </ul>
-  
-  
+<!-- SUPPORT -->
+<div class="chat-area" *ngIf="user && user.type === 'SUPPORT'">
+  <h2>Bienvenue, {{ user.username }} (Support)</h2>
+  <div class="chat-container-support">
+    <!-- Liste des clients -->
+    <div class="client-list">
+      <div *ngFor="let client of (clients | keyvalue)">
+        <button (click)="selectClient(client.key)" [class.active]="selectedClient === client.key" class="client-button">
+          {{ client.key }}
+          <span *ngIf="unread[client.key] > 0" class="notification-badge">
+            {{ unread[client.key] }}
+          </span>
+        </button>
 
-  <input type="text" [(ngModel)]="message" placeholder="Message" (keydown.enter)="sendMessage()"/>
-  <button (click)="sendMessage()">Envoyer</button>
-</div>
+      </div>
+    </div>
 
-<div *ngIf="!isConnected && role">
-  {{ connectingMessage }}
+    <!-- Fenêtre de conversation -->
+    <div class="chat-window" *ngIf="selectedClient">
+      <h3>Conversation avec {{ selectedClient }}</h3>
+
+      <ul id="messageArea">
+        <li *ngFor="let msg of clients[selectedClient]" [ngClass]="{
+          'chat-message': true,
+          'sent': msg.fromUser === user.username,
+          'received': msg.fromUser !== user.username
+        }">
+          <span class="sender">{{ msg.fromUser }}</span>
+          <p class="message-content">{{ msg.content }}</p>
+        </li>
+      </ul>
+
+      <div class="message-input">
+        <input type="text" [(ngModel)]="message" placeholder="Message" (keydown.enter)="sendMessage(selectedClient)" />
+        <button (click)="sendMessage(selectedClient)">Envoyer</button>
+      </div>
+    </div>
+  </div>
 </div>
